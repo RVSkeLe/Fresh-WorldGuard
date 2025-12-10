@@ -122,8 +122,8 @@ public class RegionFlagsListener extends AbstractListener {
         if (config.useRegions) return; // Region support disabled
         if (config.isEventDisabled(event.getEventName())) return;
 
-        if (Entities.isNPC(entity)) return;
         if (!(entity instanceof Player player)) return;
+        if (Entities.isNPC(entity)) return;
 
         RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
 
