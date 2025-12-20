@@ -61,27 +61,27 @@ public class InvincibilityListener extends AbstractListener {
         WorldConfiguration wcfg = getWorldConfig(event.getEntity().getWorld());
         if (wcfg.isEventDisabled(event.getEventName())) return;
         Entity victim = event.getEntity();
+
+        if (!(victim instanceof Player player)) return;
         if (Entities.isNPC(victim)) return;
 
-        if (victim instanceof Player player) {
-            LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
 
-            if (isInvincible(localPlayer)) {
-                player.setFireTicks(0);
-                event.setCancelled(true);
+        if (isInvincible(localPlayer)) {
+            player.setFireTicks(0);
+            event.setCancelled(true);
 
-                if (event instanceof EntityDamageByEntityEvent byEntityEvent) {
-                    Entity attacker = byEntityEvent.getDamager();
+            if (event instanceof EntityDamageByEntityEvent byEntityEvent) {
+                Entity attacker = byEntityEvent.getDamager();
 
-                    if (attacker instanceof Projectile && ((Projectile) attacker).getShooter() instanceof Entity) {
-                        attacker = (Entity) ((Projectile) attacker).getShooter();
-                    }
+                if (attacker instanceof Projectile && ((Projectile) attacker).getShooter() instanceof Entity) {
+                    attacker = (Entity) ((Projectile) attacker).getShooter();
+                }
 
-                    if (wcfg.regionInvinciblityRemovesMobs
-                            && attacker instanceof LivingEntity && !(attacker instanceof Player)
-                            && !(attacker instanceof Tameable && ((Tameable) attacker).isTamed())) {
-                        attacker.remove();
-                    }
+                if (wcfg.regionInvinciblityRemovesMobs
+                        && attacker instanceof LivingEntity && !(attacker instanceof Player)
+                        && !(attacker instanceof Tameable && ((Tameable) attacker).isTamed())) {
+                    attacker.remove();
                 }
             }
         }
