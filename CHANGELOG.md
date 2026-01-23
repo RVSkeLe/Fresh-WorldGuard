@@ -1,5 +1,14 @@
 # Changelog
 
+## 7.0.16
+
+* Update to 1.21.11
+
+## 7.0.15
+
+* Update to 1.21.10
+* Improve region file loading compatibility with NIO Java APIs
+
 ## 7.0.14
 
 * Update to 1.21.5
