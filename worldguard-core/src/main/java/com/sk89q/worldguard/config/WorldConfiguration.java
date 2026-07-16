@@ -172,6 +172,7 @@ public abstract class WorldConfiguration {
     public boolean disableSoilMoistureChange;
     public boolean disableCoralBlockFade;
     public boolean disableCopperBlockFade;
+    public boolean disableLavaHarden;
     public Set<String> allowedSnowFallOver;
     public boolean regionInvinciblityRemovesMobs;
     public boolean regionCancelEmptyChatEvents;

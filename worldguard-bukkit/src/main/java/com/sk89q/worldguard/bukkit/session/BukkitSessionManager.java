@@ -34,6 +34,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.util.Collection;
+import java.util.function.Consumer;
+
 
 /**
  * Keeps track of sessions and also does session-related handling
@@ -46,15 +48,22 @@ public class BukkitSessionManager extends AbstractSessionManager implements Runn
      * information for all players.
      */
     @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void resetAllStates() {
         Collection<? extends Player> players = Bukkit.getServer().getOnlinePlayers();
         if (WorldGuardPlugin.inst().isFolia()) {
             for (Player player : players) {
-                player.getScheduler().run(WorldGuardPlugin.inst(), (scheduledTask) -> {
+                Runnable task = () -> {
                     BukkitPlayer bukkitPlayer = new BukkitPlayer(WorldGuardPlugin.inst(), player);
                     Session session = getIfPresent(bukkitPlayer);
                     if (session != null) {
                         session.resetState(bukkitPlayer);
+                    }
+                };
+                player.getScheduler().run(WorldGuardPlugin.inst(), new Consumer() {
+                    @Override
+                    public void accept(Object ignored) {
+                        task.run();
                     }
                 }, null);
             }
@@ -88,12 +97,19 @@ public class BukkitSessionManager extends AbstractSessionManager implements Runn
     }
 
     @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void run() {
         if (WorldGuardPlugin.inst().isFolia()) {
             for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-                player.getScheduler().run(WorldGuardPlugin.inst(), (scheduledTask) -> {
+                Runnable task = () -> {
                     LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
                     get(localPlayer).tick(localPlayer);
+                };
+                player.getScheduler().run(WorldGuardPlugin.inst(), new Consumer() {
+                    @Override
+                    public void accept(Object ignored) {
+                        task.run();
+                    }
                 }, null);
             }
         } else {

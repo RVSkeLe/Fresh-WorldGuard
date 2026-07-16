@@ -980,6 +980,9 @@ public final class Materials {
         MATERIAL_FLAGS.put(Material.NETHERITE_HORSE_ARMOR, 0);
         putMaterialTag(Tag.ITEMS_SPEARS, 0);
 
+        // 26.1
+        MATERIAL_FLAGS.put(Material.GOLDEN_DANDELION, 0);
+
         Stream.concat(Stream.concat(
                 Tag.CORAL_BLOCKS.getValues().stream(),
                 Tag.CORALS.getValues().stream()),
@@ -1362,7 +1365,7 @@ public final class Materials {
         // yea, that's not all, there are some more
         return switch (type) {
             case PUMPKIN, MELON, CACTUS, SUGAR_CANE, BAMBOO, BAMBOO_SAPLING,
-                    SWEET_BERRY_BUSH, NETHER_WART, CAVE_VINES, CAVE_VINES_PLANT ->
+                 SWEET_BERRY_BUSH, NETHER_WART, CAVE_VINES, CAVE_VINES_PLANT, COCOA ->
                     true;
             default -> false;
         };

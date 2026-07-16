@@ -287,6 +287,7 @@ public class BukkitWorldConfiguration extends YamlWorldConfiguration {
         disableSoilMoistureChange = getBoolean("dynamics.disable-soil-moisture-change", false);
         disableCoralBlockFade = getBoolean("dynamics.disable-coral-block-fade", false);
         disableCopperBlockFade = getBoolean("dynamics.disable-copper-block-fade", false);
+        disableLavaHarden = getBoolean("dynamics.disable-lava-harden", false);
         allowedSnowFallOver = new HashSet<>(convertLegacyBlocks(getStringList("dynamics.snow-fall-blocks", null)));
 
         worldEventChecker = new WorldEventChecker(Set.copyOf(getStringList("events.disabled", null)), getBoolean("events.whitelist-mode", false));

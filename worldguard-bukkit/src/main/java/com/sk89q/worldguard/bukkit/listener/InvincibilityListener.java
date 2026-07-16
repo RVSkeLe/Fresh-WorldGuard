@@ -61,9 +61,8 @@ public class InvincibilityListener extends AbstractListener {
         WorldConfiguration wcfg = getWorldConfig(event.getEntity().getWorld());
         if (wcfg.isEventDisabled(event.getEventName())) return;
         Entity victim = event.getEntity();
-
         if (!(victim instanceof Player player)) return;
-        if (Entities.isNPC(victim)) return;
+        if (Entities.isNPC(player)) return;
 
         LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
 
@@ -89,30 +88,28 @@ public class InvincibilityListener extends AbstractListener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityCombust(EntityCombustEvent event) {
-        Entity entity = event.getEntity();
         if (getWorldConfig(event.getEntity().getWorld()).isEventDisabled(event.getEventName())) return;
-        if (Entities.isNPC(entity)) return;
+        Entity entity = event.getEntity();
+        if (!(entity instanceof Player player)) return;
+        if (Entities.isNPC(player)) return;
 
-        if (entity instanceof Player player) {
-            LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
 
-            if (isInvincible(localPlayer)) {
-                event.setCancelled(true);
-            }
+        if (isInvincible(localPlayer)) {
+            event.setCancelled(true);
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if (getWorldConfig(event.getEntity().getWorld()).isEventDisabled(event.getEventName())) return;
-        if (Entities.isNPC(event.getEntity())) return;
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (Entities.isNPC(player)) return;
 
-        if (event.getEntity() instanceof Player player) {
-            LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
 
-            if (event.getFoodLevel() < player.getFoodLevel() && isInvincible(localPlayer)) {
-                event.setCancelled(true);
-            }
+        if (event.getFoodLevel() < player.getFoodLevel() && isInvincible(localPlayer)) {
+            event.setCancelled(true);
         }
     }
 

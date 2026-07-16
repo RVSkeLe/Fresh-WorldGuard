@@ -25,6 +25,7 @@ import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.bukkit.util.Entities;
+import com.sk89q.worldguard.bukkit.util.PaperInterop;
 import com.sk89q.worldguard.config.WorldConfiguration;
 import com.sk89q.worldguard.session.MoveType;
 import com.sk89q.worldguard.util.Locations;
@@ -76,20 +77,20 @@ public class WorldGuardVehicleListener extends AbstractListener {
                         if (lastValid != null) {
                             if (getPlugin().isFolia()) {
                                 vehicle.setVelocity(new Vector(0, 0, 0));
-                                vehicle.teleportAsync(from);
+                                PaperInterop.teleportAsync(vehicle, from);
 
                                 if (Locations.isDifferentBlock(lastValid, BukkitAdapter.adapt(from))) {
                                     Vector dir = player.getLocation().getDirection();
-                                    player.teleportAsync(BukkitAdapter.adapt(lastValid).setDirection(dir));
+                                    PaperInterop.teleportAsync(player, BukkitAdapter.adapt(lastValid).setDirection(dir));
                                 }
                             } else {
                                 Bukkit.getScheduler().runTask(getPlugin(), () -> {
                                     vehicle.setVelocity(new Vector(0, 0, 0));
-                                    vehicle.teleportAsync(from);
+                                    vehicle.teleport(from);
 
                                     if (Locations.isDifferentBlock(lastValid, BukkitAdapter.adapt(from))) {
                                         Vector dir = player.getLocation().getDirection();
-                                        player.teleportAsync(BukkitAdapter.adapt(lastValid).setDirection(dir));
+                                        player.teleport(BukkitAdapter.adapt(lastValid).setDirection(dir));
                                     }
                                 });
                             }

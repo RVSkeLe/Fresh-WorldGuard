@@ -99,6 +99,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -141,6 +142,7 @@ public class WorldGuardPlugin extends JavaPlugin {
      * Called on plugin enable.
      */
     @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void onEnable() {
         // Catch bad things being done by naughty plugins that include WorldGuard's classes
         ClassSourceValidator verifier = new ClassSourceValidator(this);
@@ -169,7 +171,12 @@ public class WorldGuardPlugin extends JavaPlugin {
         }
 
         if (this.isFolia()) {
-            getServer().getGlobalRegionScheduler().runAtFixedRate(this, scheduledTask -> sessionManager.run(), BukkitSessionManager.RUN_DELAY, BukkitSessionManager.RUN_DELAY);
+            getServer().getGlobalRegionScheduler().runAtFixedRate(this, new Consumer() {
+                @Override
+                public void accept(Object ignored) {
+                    sessionManager.run();
+                }
+            }, BukkitSessionManager.RUN_DELAY, BukkitSessionManager.RUN_DELAY);
         } else {
             getServer().getScheduler().scheduleSyncRepeatingTask(this, sessionManager, BukkitSessionManager.RUN_DELAY, BukkitSessionManager.RUN_DELAY);
         }
@@ -215,9 +222,12 @@ public class WorldGuardPlugin extends JavaPlugin {
 
         if (this.isFolia()) {
             for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-                player.getScheduler().run(this, scheduledTask -> {
-                    ProcessPlayerEvent event = new ProcessPlayerEvent(player);
-                    Events.fire(event);
+                player.getScheduler().run(this, new Consumer() {
+                    @Override
+                    public void accept(Object ignored) {
+                        ProcessPlayerEvent event = new ProcessPlayerEvent(player);
+                        Events.fire(event);
+                    }
                 }, null);
             }
         } else {
@@ -549,6 +559,7 @@ public class WorldGuardPlugin extends JavaPlugin {
     public PlayerMoveListener getPlayerMoveListener() {
         return playerMoveListener;
     }
+
     private final LazyReference<Boolean> folia = LazyReference.from(() -> {
         try {
             // Folia is Paper-based, so this is a good first check.

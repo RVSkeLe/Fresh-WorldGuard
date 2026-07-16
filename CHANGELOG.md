@@ -1,5 +1,15 @@
 # Changelog
 
+## 7.0.18
+
+* Add lava-harden flag for cobblestone/stone/obsidian/basalt forming
+
+## 7.0.17
+
+* Fix cocoa not being treated as a crop in relevant flags
+* Fix overlapping game mode flags sometimes not storing the expected previous game mode
+* Replace PaperLib functionality that doesn't behave as expected on MC 26.1+
+
 ## 7.0.16
 
 * Update to 1.21.11.

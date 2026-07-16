@@ -40,6 +40,7 @@ import org.bukkit.event.world.WorldUnloadEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
@@ -62,6 +63,7 @@ public class BukkitRegionContainer extends RegionContainer {
     }
 
     @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void initialize() {
         super.initialize();
         Bukkit.getPluginManager().registerEvents(new Listener() {
@@ -103,7 +105,12 @@ public class BukkitRegionContainer extends RegionContainer {
         }, plugin);
 
         if (WorldGuardPlugin.inst().isFolia()) {
-            Bukkit.getGlobalRegionScheduler().runAtFixedRate(plugin, scheduledTask -> cache.invalidateAll(), CACHE_INVALIDATION_INTERVAL, CACHE_INVALIDATION_INTERVAL);
+            Bukkit.getGlobalRegionScheduler().runAtFixedRate(plugin, new Consumer() {
+                @Override
+                public void accept(Object ignored) {
+                    cache.invalidateAll();
+                }
+            }, CACHE_INVALIDATION_INTERVAL, CACHE_INVALIDATION_INTERVAL);
         } else {
             Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, cache::invalidateAll, CACHE_INVALIDATION_INTERVAL, CACHE_INVALIDATION_INTERVAL);
         }
