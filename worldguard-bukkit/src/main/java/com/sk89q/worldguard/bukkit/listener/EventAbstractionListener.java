@@ -418,6 +418,7 @@ public class EventAbstractionListener extends AbstractListener {
         }
     }
 
+    @EventHandler(ignoreCancelled = true)
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
         if (getWorldConfig(event.getBlock().getWorld()).isEventDisabled(event.getEventName())) return;
         if (event.isSticky()) {
@@ -449,6 +450,7 @@ public class EventAbstractionListener extends AbstractListener {
         }
     }
 
+    @EventHandler(ignoreCancelled = true)
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
         if (getWorldConfig(event.getBlock().getWorld()).isEventDisabled(event.getEventName())) return;
         EventDebounce.Entry entry = pistonExtendDebounce.getIfNotPresent(new BlockPistonExtendKey(event), event);
@@ -617,6 +619,7 @@ public class EventAbstractionListener extends AbstractListener {
         }
     }
 
+    @EventHandler(ignoreCancelled = true)
     public void onEntityBlockForm(EntityBlockFormEvent event) {
         if (getWorldConfig(event.getEntity().getWorld()).isEventDisabled(event.getEventName())) return;
         entityBreakBlockDebounce.debounce(event.getBlock(), event.getEntity(), event,
@@ -632,6 +635,7 @@ public class EventAbstractionListener extends AbstractListener {
                         event.getBlock()).setAllowed(hasInteractBypass(event.getBlock())));
     }
 
+    @EventHandler(ignoreCancelled = true)
     public void onBlockFertilize(BlockFertilizeEvent event) {
         if (getWorldConfig(event.getBlock().getWorld()).isEventDisabled(event.getEventName())) return;
         if (event.getBlocks().isEmpty()) return;
@@ -869,6 +873,7 @@ public class EventAbstractionListener extends AbstractListener {
         }
     }
 
+    @EventHandler(ignoreCancelled = true)
     public void onExpBottle(ExpBottleEvent event) {
         if (getWorldConfig(event.getEntity().getWorld()).isEventDisabled(event.getEventName())) return;
         if (Events.fireAndTestCancel(new SpawnEntityEvent(event, create(event.getEntity()), event.getEntity().getLocation(), EntityType.EXPERIENCE_ORB))) {
@@ -1055,6 +1060,7 @@ public class EventAbstractionListener extends AbstractListener {
         handleInventoryHolderUse(event, create(event.getPlayer()), holder);
     }
 
+    // Disabled
     public void onInventoryMoveItem(InventoryMoveItemEvent event) {
         InventoryHolder causeHolder = PaperLib.getHolder(event.getInitiator(), false).getHolder();
 
@@ -1147,6 +1153,7 @@ public class EventAbstractionListener extends AbstractListener {
         }
     }
 
+    // IDK
     public void onBlockDispense(BlockDispenseEvent event) {
         if (getWorldConfig(event.getBlock().getWorld()).isEventDisabled(event.getEventName())) return;
         Block dispenserBlock = event.getBlock();
