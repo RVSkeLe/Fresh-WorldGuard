@@ -769,7 +769,6 @@ public class WorldGuardEntityListener extends AbstractListener {
 
     private static void handlePigZap(Entity entity, Cancellable event) {
         WorldConfiguration wcfg = getWorldConfig(entity.getWorld());
-        if (wcfg.isEventDisabled(event.getEventName())) return;
 
         if (wcfg.disablePigZap) {
             event.setCancelled(true);
@@ -916,6 +915,7 @@ public class WorldGuardEntityListener extends AbstractListener {
         @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
         public void onEntityZap(EntityZapEvent event) {
             if (event.getEntityType() == EntityType.PIG) {
+                if (getWorldConfig(event.getEntity().getWorld()).isEventDisabled(event.getEventName())) return;
                 handlePigZap(event.getEntity(), event);
             }
         }
@@ -924,6 +924,7 @@ public class WorldGuardEntityListener extends AbstractListener {
     private static class SpigotListener implements Listener {
         @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
         public void onPigZap(PigZapEvent event) {
+            if (getWorldConfig(event.getEntity().getWorld()).isEventDisabled(event.getEventName())) return;
             handlePigZap(event.getEntity(), event);
         }
     }
