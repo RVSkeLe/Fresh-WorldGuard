@@ -968,7 +968,10 @@ public class WorldGuardEntityListener extends AbstractListener {
             }
 
             Location spawnLoc = event.getSpawnLocation();
-            handleCreatureSpawn(event, spawnLoc, event.getType(), event.getReason(), cfg, getWorldConfig(spawnLoc.getWorld()));
+            WorldConfiguration wcfg = getWorldConfig(spawnLoc.getWorld());
+            if (wcfg.isEventDisabled(event.getEventName())) return;
+
+            handleCreatureSpawn(event, spawnLoc, event.getType(), event.getReason(), cfg, wcfg);
         }
     }
 
